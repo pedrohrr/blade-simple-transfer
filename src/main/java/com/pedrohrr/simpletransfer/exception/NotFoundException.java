@@ -8,7 +8,7 @@ public class NotFoundException extends SimpleTransferException {
     }
 
     @Override
-    protected HttpResponseStatus getStatus() {
+    public HttpResponseStatus getStatus() {
         return HttpResponseStatus.NOT_FOUND;
     }
 }

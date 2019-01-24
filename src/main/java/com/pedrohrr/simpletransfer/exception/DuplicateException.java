@@ -10,7 +10,7 @@ public class DuplicateException extends SimpleTransferException {
     }
 
     @Override
-    protected HttpResponseStatus getStatus() {
+    public HttpResponseStatus getStatus() {
         return null;
     }
 }

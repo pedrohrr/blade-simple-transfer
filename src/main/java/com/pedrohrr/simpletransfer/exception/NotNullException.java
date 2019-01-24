@@ -8,7 +8,7 @@ public class NotNullException extends SimpleTransferException {
     }
 
     @Override
-    protected HttpResponseStatus getStatus() {
+    public HttpResponseStatus getStatus() {
         return HttpResponseStatus.BAD_REQUEST;
     }
 }
