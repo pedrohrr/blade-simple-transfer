@@ -3,18 +3,20 @@ package com.pedrohrr.simpletransfer.service;
 import com.blade.ioc.annotation.Inject;
 import com.blade.test.BladeApplication;
 import com.blade.test.BladeTestRunner;
-import com.pedrohrr.simpletransfer.SimpleTransferApplication;
 import com.pedrohrr.simpletransfer.TestApplication;
 import com.pedrohrr.simpletransfer.model.Client;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(BladeTestRunner.class)
 @BladeApplication(TestApplication.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientServiceIntegrationTest {
 
     @Inject
@@ -41,7 +43,7 @@ public class ClientServiceIntegrationTest {
         c.setId(2l);
         c.setFirstname("John");
         c.setLastname("Doe");
-        service.update(c);
+       assertEquals(1, service.update(c));
     }
 
     @Test
@@ -61,6 +63,6 @@ public class ClientServiceIntegrationTest {
 
     @Test
     public void test5delete() {
-        service.delete(1l);
+        assertEquals(1, service.delete(1l));
     }
 }
