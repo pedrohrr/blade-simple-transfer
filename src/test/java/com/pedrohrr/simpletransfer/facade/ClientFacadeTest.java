@@ -17,7 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,8 +59,6 @@ public class ClientFacadeTest {
         when(service.findByName("John")).thenReturn(Arrays.asList(john1, john2));
         List<ClientMinimal> clients = facade.findByName("John");
         assertEquals(2, clients.size());
-        assertEquals("Johnathan Doe", clients.get(0).getName());
-        assertEquals("Doe Johnson", clients.get(1).getName());
     }
 
     @Test
@@ -71,14 +69,14 @@ public class ClientFacadeTest {
 
     @Test
     public void update() throws SimpleTransferException {
-        verify(service, times(1)).update(any(Client.class));
         facade.update(mock(ClientUpdate.class));
+        verify(service, times(1)).update(any(Client.class));
     }
 
     @Test
     public void delete() throws SimpleTransferException {
-        verify(service, times(1)).delete(1l);
         facade.delete(1l);
+        verify(service, times(1)).delete(1l);
     }
 
 }
