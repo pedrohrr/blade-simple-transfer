@@ -16,7 +16,7 @@ public class AccountCreateValidatorTest {
     @Test
     public void validateAllNull() throws InvalidDataException {
         expect.expect(InvalidDataException.class);
-        expect.expectMessage("currency must not be blank; iban must not be blank; client must not be null");
+        expect.expectMessage("client must not be null; currency must not be blank; iban must not be blank");
 
         AccountCreate a = new AccountCreate();
         validator.validate(a);

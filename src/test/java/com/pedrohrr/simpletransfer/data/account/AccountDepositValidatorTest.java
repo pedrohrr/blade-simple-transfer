@@ -19,7 +19,7 @@ public class AccountDepositValidatorTest {
     @Test
     public void validateAllNull() throws InvalidDataException {
         expect.expect(InvalidDataException.class);
-        expect.expectMessage("id must not be null; amount must not be null");
+        expect.expectMessage("amount must not be null; id must not be null");
 
         AccountDeposit a = new AccountDeposit();
         validator.validate(a);

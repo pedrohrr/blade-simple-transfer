@@ -25,7 +25,7 @@ public class Validator {
     public void validate(final ValidatedData data) throws InvalidDataException {
         final Set<ConstraintViolation<ValidatedData>> violations = factory.getValidator().validate(data);
         if (!violations.isEmpty()) {
-            throw new InvalidDataException(violations.stream().map(getCustomMessage()).collect(Collectors.joining(SEPARATOR)));
+            throw new InvalidDataException(violations.stream().map(getCustomMessage()).sorted().collect(Collectors.joining(SEPARATOR)));
         }
     }
 
