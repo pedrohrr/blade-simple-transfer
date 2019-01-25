@@ -8,6 +8,7 @@ import com.pedrohrr.simpletransfer.enumeration.AccountStatus;
 import com.pedrohrr.simpletransfer.exception.DuplicateException;
 import com.pedrohrr.simpletransfer.exception.NotEmptyAccountException;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
+import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.model.Client;
 import org.junit.FixMethodOrder;
@@ -40,13 +41,13 @@ public class AccountServiceIntegrationTest {
         assertEquals(1l, clientService.create(c).longValue());
 
         final Account account = new Account();
-        account.setClient(c);
+        account.setClient(1l);
         account.setCurrency("USD");
         account.setIban("102939303820228");
         assertEquals(1l, service.create(account).longValue());
 
         final Account account2 = new Account();
-        account2.setClient(c);
+        account2.setClient(1l);
         account2.setCurrency("EUR");
         account2.setIban("102939303820400");
         assertEquals(2l, service.create(account2).longValue());
@@ -55,10 +56,10 @@ public class AccountServiceIntegrationTest {
         c.setFirstname("Jack");
         c.setLastname("Doe");
         c.setPassport("AAA560");
-        assertEquals(1l, clientService.create(c).longValue());
+        assertEquals(2l, clientService.create(c).longValue());
 
         final Account account3 = new Account();
-        account3.setClient(c2);
+        account3.setClient(2l);
         account3.setCurrency("BRL");
         account3.setIban("102939303825670");
         assertEquals(3l, service.create(account3).longValue());
@@ -80,7 +81,7 @@ public class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void test05delete() throws NotFoundException, NotEmptyAccountException {
+    public void test05delete() throws SimpleTransferException {
         service.delete(2l);
     }
 

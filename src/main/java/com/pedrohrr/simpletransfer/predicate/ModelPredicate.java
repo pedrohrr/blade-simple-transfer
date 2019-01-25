@@ -5,7 +5,7 @@ import com.pedrohrr.simpletransfer.model.Client;
 
 import java.util.function.Predicate;
 
-public final class ClientPredicate {
+public final class ModelPredicate {
 
     public static final String PASSPORT = "passport";
     public static final String IBAN = "iban";

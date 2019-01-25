@@ -6,6 +6,7 @@ import com.blade.test.BladeTestRunner;
 import com.pedrohrr.simpletransfer.TestApplication;
 import com.pedrohrr.simpletransfer.exception.DuplicateException;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
+import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Client;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -64,7 +65,7 @@ public class ClientServiceIntegrationTest {
     }
 
     @Test
-    public void test05delete() throws NotFoundException {
+    public void test05delete() throws SimpleTransferException {
         service.delete(1l);
     }
 
@@ -102,7 +103,7 @@ public class ClientServiceIntegrationTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void test10deleteNotFoundException() throws NotFoundException {
+    public void test10deleteNotFoundException() throws SimpleTransferException {
         service.delete(1l);
     }
 }
