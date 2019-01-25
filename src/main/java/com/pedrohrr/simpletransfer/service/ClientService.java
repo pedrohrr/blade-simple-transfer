@@ -7,18 +7,15 @@ import com.pedrohrr.simpletransfer.model.Client;
 import io.github.biezhi.anima.Anima;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static com.pedrohrr.simpletransfer.predicate.ClientPredicate.*;
-import static com.pedrohrr.simpletransfer.predicate.ClientPredicate.getPassportPredicate;
 
 @Bean
-public class ClientService {
+public class ClientService extends AbstractService<Client> {
 
     public Long create(final Client client) throws DuplicateException {
         client.setId(null);
-        if (!find(getPassportPredicate(client.getPassport())).isEmpty()) {
+        if (hasAny(getPassportPredicate(client.getPassport()))) {
             throw new DuplicateException(PASSPORT);
         }
         return client.save().asLong();
@@ -56,7 +53,8 @@ public class ClientService {
         }
     }
 
-    private List<Client> find(Predicate<Client> predicate) {
-        return Anima.select().from(Client.class).filter(predicate).collect(Collectors.toList());
+    @Override
+    Class<Client> modelClass() {
+        return Client.class;
     }
 }

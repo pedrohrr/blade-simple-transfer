@@ -4,16 +4,19 @@ import com.blade.ioc.annotation.Bean;
 import com.pedrohrr.simpletransfer.exception.DuplicateException;
 import com.pedrohrr.simpletransfer.exception.NotEmptyAccountException;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
-import com.pedrohrr.simpletransfer.exception.UnmodifiableAttributeException;
 import com.pedrohrr.simpletransfer.model.Account;
 
 import java.util.List;
 
 @Bean
-public class AccountService {
+public class AccountService extends AbstractService<Account> {
 
     public Long create(final Account account) throws DuplicateException {
-        return null;
+        account.setId(null);
+
+
+
+        return account.save().asLong();
     }
 
     public Account findById(final Long id) throws NotFoundException {
@@ -28,4 +31,8 @@ public class AccountService {
         return null;
     }
 
+    @Override
+    Class<Account> modelClass() {
+        return Account.class;
+    }
 }
