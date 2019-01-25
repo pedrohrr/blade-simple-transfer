@@ -4,17 +4,21 @@ import com.pedrohrr.simpletransfer.data.ValidatedData;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Data
 public class TransferCreate extends ValidatedData {
 
+    @NotNull
     @Positive
     private BigDecimal amount;
-    @NonNull
+    @NotNull
+    @Positive
     private Long receiver;
-    @NonNull
+    @NotNull
+    @Positive
     private Long sender;
     private String notes;
 

@@ -1,4 +1,4 @@
-package com.pedrohrr.simpletransfer.data.account;
+package com.pedrohrr.simpletransfer.data.transfer;
 
 import com.pedrohrr.simpletransfer.data.Validator;
 import com.pedrohrr.simpletransfer.exception.InvalidDataException;
@@ -8,7 +8,7 @@ import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 
-public class AccountDepositValidatorTest {
+public class TransferCreateValidatorTest {
 
     @Rule
     public ExpectedException expect = ExpectedException.none();
@@ -18,10 +18,10 @@ public class AccountDepositValidatorTest {
     @Test
     public void validateAllNull() throws InvalidDataException {
         expect.expect(InvalidDataException.class);
-        expect.expectMessage("amount must not be null; id must not be null");
+        expect.expectMessage("amount must not be null; receiver must not be null; sender must not be null");
 
-        AccountDeposit a = new AccountDeposit();
-        validator.validate(a);
+        final TransferCreate tr = new TransferCreate();
+        validator.validate(tr);
     }
 
     @Test
@@ -29,9 +29,11 @@ public class AccountDepositValidatorTest {
         expect.expect(InvalidDataException.class);
         expect.expectMessage("amount must be greater than 0");
 
-        AccountDeposit a = new AccountDeposit();
-        a.setAmount(BigDecimal.valueOf(-100));
-        validator.validate(a);
+        final TransferCreate tr = new TransferCreate();
+        tr.setAmount(BigDecimal.valueOf(-200));
+        tr.setReceiver(3l);
+        tr.setSender(3l);
+        validator.validate(tr);
     }
 
 }
