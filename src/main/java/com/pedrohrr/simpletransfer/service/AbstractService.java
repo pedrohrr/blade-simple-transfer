@@ -41,7 +41,6 @@ abstract class AbstractService<T extends AbstractModel> {
     }
 
     Long create(final T model, Predicate<T> uniquePredicate, String... attributes) throws DuplicateException {
-        model.setId(null);
         if (uniquePredicate != null && hasAny(uniquePredicate)) {
             throw new DuplicateException(attributes);
         }
