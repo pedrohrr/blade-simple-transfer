@@ -2,7 +2,6 @@ package com.pedrohrr.simpletransfer.data.transfer;
 
 import com.pedrohrr.simpletransfer.data.ValidatedData;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
