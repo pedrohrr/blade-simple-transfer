@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 public class AccountDeposit extends ValidatedData {
 
     @NotNull
+    @Positive
     private Long id;
+    @NotNull
     @Positive
     private BigDecimal amount;
 

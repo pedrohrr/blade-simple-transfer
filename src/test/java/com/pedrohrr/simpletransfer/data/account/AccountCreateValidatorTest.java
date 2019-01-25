@@ -1,13 +1,10 @@
 package com.pedrohrr.simpletransfer.data.account;
 
 import com.pedrohrr.simpletransfer.data.Validator;
-import com.pedrohrr.simpletransfer.data.client.ClientCreate;
 import com.pedrohrr.simpletransfer.exception.InvalidDataException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.junit.Assert.*;
 
 public class AccountCreateValidatorTest {
 
