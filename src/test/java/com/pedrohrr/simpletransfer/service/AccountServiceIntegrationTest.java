@@ -33,7 +33,7 @@ public class AccountServiceIntegrationTest {
     private ClientService clientService;
 
     @Test
-    public void test01AccountFlow() throws SimpleTransferException {
+    public void test01CreateClients() throws SimpleTransferException {
         final Client client1 = new Client();
         client1.setFirstname("John");
         client1.setLastname("Doe");
@@ -41,10 +41,10 @@ public class AccountServiceIntegrationTest {
         long c1 = clientService.create(client1);
 
         final Client client2 = new Client();
-        client1.setFirstname("Jack");
-        client1.setLastname("Doe");
-        client1.setPassport("AAA345");
-        long c2 = clientService.create(client1);
+        client2.setFirstname("Jack");
+        client2.setLastname("Doe");
+        client2.setPassport("AAA345");
+        long c2 = clientService.create(client2);
 
         final Account account = new Account();
         account.setClient(c1);

@@ -13,17 +13,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 abstract class AbstractService<T extends AbstractModel> {
-    public Long create(final T model, Predicate<T> uniquePredicate, String... attributes) throws DuplicateException {
-        model.setId(null);
-        if (hasAny(uniquePredicate)) {
-            throw new DuplicateException(attributes);
-        }
-        return model.save().asLong();
+
+    public Long create(final T model) throws DuplicateException {
+        return create(model, null);
     }
 
     public void update(final T model) throws NotFoundException {
         if (model.update() == 0) {
-            throw new NotFoundException(modelClass().getName());
+            throw new NotFoundException(modelName());
         }
     }
 
@@ -31,7 +28,7 @@ abstract class AbstractService<T extends AbstractModel> {
         final T model = from().byId(id);
 
         if (model == null) {
-            throw new NotFoundException(modelClass().getName());
+            throw new NotFoundException(modelName());
         }
 
         return model;
@@ -39,8 +36,16 @@ abstract class AbstractService<T extends AbstractModel> {
 
     public void delete(final Long id) throws SimpleTransferException {
         if (Anima.deleteById(modelClass(), id) == 0) {
-            throw new NotFoundException(modelClass().getName());
+            throw new NotFoundException(modelName());
         }
+    }
+
+    Long create(final T model, Predicate<T> uniquePredicate, String... attributes) throws DuplicateException {
+        model.setId(null);
+        if (uniquePredicate != null && hasAny(uniquePredicate)) {
+            throw new DuplicateException(attributes);
+        }
+        return model.save().asLong();
     }
 
     AnimaQuery<T> from() {
@@ -51,14 +56,28 @@ abstract class AbstractService<T extends AbstractModel> {
         List<T> result = getFilter(predicate).collect(Collectors.toList());
 
         if (result.isEmpty()) {
-            throw new NotFoundException(modelClass().getName());
+            throw new NotFoundException(modelName());
         }
 
         return result;
     }
 
+    List<T> bySQL(final String query, final Object... params) throws NotFoundException {
+        final List<Long> ids = Anima.select().bySQL(Long.class, query, params).all();
+
+        if (ids.isEmpty()) {
+            throw new NotFoundException(modelName());
+        }
+
+        return from().byIds(ids.toArray());
+    }
+
     boolean hasAny(final Predicate<T> predicate) {
         return getFilter(predicate).count() != 0;
+    }
+
+    String modelName() {
+        return modelClass().getSimpleName();
     }
 
     private Stream<T> getFilter(final Predicate<T> predicate) {
@@ -66,4 +85,5 @@ abstract class AbstractService<T extends AbstractModel> {
     }
 
     abstract Class<T> modelClass();
+
 }

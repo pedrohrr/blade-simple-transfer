@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <blade.version>2.0.14.RELEASE</blade.version>
-        <anima.version>0.2.5</anima.version>
+        <anima.version>0.2.6</anima.version>
         <h2.version>1.4.197</h2.version>
         <junit.version>4.12</junit.version>
     </properties>

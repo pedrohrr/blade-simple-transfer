@@ -21,6 +21,18 @@ public class Transfer extends AbstractModel {
     private BigDecimal conversion;
     private TransferStatus status;
 
+    public Transfer() {
+        this.status = TransferStatus.POSTED;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @Override
+    public int update() {
+        this.processedAt = LocalDateTime.now();
+
+        return super.update();
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
