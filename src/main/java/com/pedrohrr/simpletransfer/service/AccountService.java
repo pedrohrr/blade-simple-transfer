@@ -8,6 +8,7 @@ import com.pedrohrr.simpletransfer.model.Account;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import static com.pedrohrr.simpletransfer.predicate.ModelPredicate.*;
 
 @Bean
@@ -22,7 +23,17 @@ public class AccountService extends AbstractService<Account> {
     }
 
     public void adjustBalance(final Long id, final BigDecimal movement) throws InsuficientFundsException, NotFoundException {
+        final Account account = findById(id);
+        account.setBalance(applyMovement(movement, account));
+        update(account);
+    }
 
+    private BigDecimal applyMovement(final BigDecimal movement, final Account account) throws InsuficientFundsException {
+        final BigDecimal result = account.getBalance().add(movement);
+        if (movement.signum() == -1 && result.signum() == -1) {
+            throw new InsuficientFundsException();
+        }
+        return result;
     }
 
     @Override
