@@ -11,6 +11,9 @@ import com.pedrohrr.simpletransfer.exception.NotFoundException;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.model.Client;
+import io.github.biezhi.anima.Anima;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,56 +36,81 @@ public class AccountServiceIntegrationTest {
     private ClientService clientService;
 
     @Test
-    public void test01create() throws DuplicateException {
-        final Client c = new Client();
-        c.setFirstname("John");
-        c.setLastname("Doe");
-        c.setPassport("AAA567");
-        assertEquals(1l, clientService.create(c).longValue());
+    public void test01AccountFlow() throws SimpleTransferException {
+        final Client client1 = new Client();
+        client1.setFirstname("John");
+        client1.setLastname("Doe");
+        client1.setPassport("AAA123");
+        long c1 = clientService.create(client1);
+
+        final Client client2 = new Client();
+        client1.setFirstname("Jack");
+        client1.setLastname("Doe");
+        client1.setPassport("AAA345");
+        long c2 = clientService.create(client1);
 
         final Account account = new Account();
-        account.setClient(1l);
+        account.setClient(c1);
         account.setCurrency("USD");
         account.setIban("102939303820228");
-        assertEquals(1l, service.create(account).longValue());
+        service.create(account);
 
         final Account account2 = new Account();
-        account2.setClient(1l);
+        account2.setClient(c1);
         account2.setCurrency("EUR");
         account2.setIban("102939303820400");
-        assertEquals(2l, service.create(account2).longValue());
+        long a2 = service.create(account2);
 
-        final Client c2 = new Client();
-        c.setFirstname("Jack");
-        c.setLastname("Doe");
-        c.setPassport("AAA560");
-        assertEquals(2l, clientService.create(c).longValue());
-
-        final Account account3 = new Account();
-        account3.setClient(2l);
+        Account account3 = new Account();
+        account3.setClient(c2);
         account3.setCurrency("BRL");
         account3.setIban("102939303825670");
-        assertEquals(3l, service.create(account3).longValue());
-    }
+        long a3 = service.create(account3);
 
-    @Test
-    public void test03findById() throws NotFoundException {
-        Account account = service.findById(3l);
-        assertEquals("BRL", account.getCurrency());
-        assertEquals("102939303825670", account.getIban());
-        assertEquals(AccountStatus.ACTIVE, account.getStatus());
-        assertEquals(BigDecimal.valueOf(0.0), account.getBalance());
-    }
+        account3 = service.findById(a3);
+        assertEquals("BRL", account3.getCurrency());
+        assertEquals("102939303825670", account3.getIban());
+        assertEquals(AccountStatus.ACTIVE, account3.getStatus());
+        assertEquals(BigDecimal.valueOf(0.0), account3.getBalance());
 
-    @Test
-    public void test04findByClientId() throws NotFoundException {
-        List<Account> accounts = service.findByClientId(1l);
+        List<Account> accounts = service.findByClientId(c1);
         assertEquals(2, accounts.size());
+
+        service.delete(a2);
     }
 
-    @Test
-    public void test05delete() throws SimpleTransferException {
-        service.delete(2l);
+
+    @Test(expected = DuplicateException.class)
+    public void test06createDuplicateException() throws DuplicateException {
+        final Account account = new Account();
+        account.setCurrency("USD");
+        account.setIban("102939303820228");
+        service.create(account);
     }
+
+    @Test(expected = NotFoundException.class)
+    public void test07updateNotFoundException() throws NotFoundException {
+        final Account account = new Account();
+        account.setId(100l);
+        account.setCurrency("USD");
+        account.setIban("102939303820228");
+        service.update(account);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void test08findByNameNotFoundException() throws NotFoundException {
+        service.findByClientId(100l);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void test09findByIdNotFoundException() throws NotFoundException {
+        service.findById(100l);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void test10deleteNotFoundException() throws SimpleTransferException {
+        service.delete(100l);
+    }
+
 
 }
