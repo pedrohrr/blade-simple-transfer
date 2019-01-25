@@ -2,7 +2,6 @@
 package com.pedrohrr.simpletransfer.model;
 
 import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
-import io.github.biezhi.anima.Model;
 import io.github.biezhi.anima.annotation.Table;
 
 import java.math.BigDecimal;
@@ -10,13 +9,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Table(name = "transfers")
-public class Transfer extends Model {
+public class Transfer extends AbstractModel {
 
     private Long id;
     private BigDecimal amount;
     private String notes;
-    private Account receiver;
-    private Account sender;
+    private Long receiver;
+    private Long sender;
     private LocalDateTime createdAt;
     private LocalDateTime processedAt;
     private BigDecimal conversion;
@@ -46,19 +45,19 @@ public class Transfer extends Model {
         this.notes = notes;
     }
 
-    public Account getReceiver() {
+    public Long getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(Account receiver) {
+    public void setReceiver(Long receiver) {
         this.receiver = receiver;
     }
 
-    public Account getSender() {
+    public Long getSender() {
         return sender;
     }
 
-    public void setSender(Account sender) {
+    public void setSender(Long sender) {
         this.sender = sender;
     }
 

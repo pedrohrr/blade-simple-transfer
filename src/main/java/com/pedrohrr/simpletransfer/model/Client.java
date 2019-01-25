@@ -1,13 +1,12 @@
 
 package com.pedrohrr.simpletransfer.model;
 
-import io.github.biezhi.anima.Model;
 import io.github.biezhi.anima.annotation.Table;
 
 import java.util.Objects;
 
 @Table(name = "clients")
-public class Client extends Model {
+public class Client extends AbstractModel {
 
     private Long id;
     private String firstname;

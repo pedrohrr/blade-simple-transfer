@@ -2,28 +2,24 @@
 package com.pedrohrr.simpletransfer.model;
 
 import com.pedrohrr.simpletransfer.enumeration.AccountStatus;
-import io.github.biezhi.anima.Model;
 import io.github.biezhi.anima.annotation.Table;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Table(name = "accounts")
-public class Account extends Model {
+public class Account extends AbstractModel {
 
     private Long id;
-    private Client client;
+    private Long client;
     private String currency;
     private BigDecimal balance;
     private String iban;
     private AccountStatus status;
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public Account() {
+        this.status = AccountStatus.ACTIVE;
+        this.balance = BigDecimal.ZERO;
     }
 
     public String getCurrency() {
@@ -40,6 +36,14 @@ public class Account extends Model {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClient() {
+        return client;
+    }
+
+    public void setClient(Long client) {
+        this.client = client;
     }
 
     public BigDecimal getBalance() {
