@@ -7,11 +7,13 @@ import com.pedrohrr.simpletransfer.data.client.ClientMinimal;
 import com.pedrohrr.simpletransfer.data.client.ClientUpdate;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Client;
+import com.pedrohrr.simpletransfer.populator.ClientPopulator;
 import com.pedrohrr.simpletransfer.service.ClientService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
@@ -28,6 +30,9 @@ public class ClientFacadeTest {
 
     @Mock
     private ClientService service;
+
+    @Spy
+    private ClientPopulator populator = new ClientPopulator();
 
     @Mock
     private Validator validator;

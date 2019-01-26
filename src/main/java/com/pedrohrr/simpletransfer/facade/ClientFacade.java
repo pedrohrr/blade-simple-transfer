@@ -9,6 +9,7 @@ import com.pedrohrr.simpletransfer.data.client.ClientMinimal;
 import com.pedrohrr.simpletransfer.data.client.ClientUpdate;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Client;
+import com.pedrohrr.simpletransfer.populator.ClientPopulator;
 import com.pedrohrr.simpletransfer.service.ClientService;
 
 import java.util.List;
@@ -19,57 +20,35 @@ public class ClientFacade {
     
     @Inject
     private ClientService service;
+
+    @Inject
+    private ClientPopulator populator;
     
     @Inject
     private Validator validator;
 
     public ClientDetailed findById(final Long clientId) throws SimpleTransferException {
         final Client client = service.findById(clientId);
-        return toDetailed(client);
+        return populator.toDetailed(client);
     }
 
     public List<ClientMinimal> findByName(final String name) throws SimpleTransferException {
         final List<Client> clients = service.findByName(name);
-        return clients.stream().map(this::toMinimal).collect(Collectors.toList());
+        return clients.stream().map(c -> populator.toMinimal(c)).collect(Collectors.toList());
     }
 
     public Long create(final ClientCreate client) throws SimpleTransferException {
         validator.validate(client);
-        final Client model = new Client();
-        model.setFirstname(client.getFirstname());
-        model.setLastname(client.getLastname());
-        model.setPassport(client.getPassport());
-        return service.create(model);
+        return service.create(populator.fromCreate(client));
     }
 
     public void update(final ClientUpdate client) throws SimpleTransferException {
         validator.validate(client);
-        final Client model = new Client();
-        model.setId(client.getId());
-        model.setFirstname(client.getFirstname());
-        model.setLastname(client.getLastname());
-        model.setPassport(client.getPassport());
-        service.update(model);
+        service.update(populator.fromUpdate(client));
     }
 
     public void delete(final Long clientId) throws SimpleTransferException {
         service.delete(clientId);
-    }
-
-    private ClientMinimal toMinimal(final Client client) {
-        final ClientMinimal detailed = new ClientMinimal();
-        detailed.setId(client.getId());
-        detailed.setName(client.getFirstname() + " " + client.getLastname());
-        return detailed;
-    }
-
-    private ClientDetailed toDetailed(final Client client) {
-        final ClientDetailed detailed = new ClientDetailed();
-        detailed.setId(client.getId());
-        detailed.setFirstname(client.getFirstname());
-        detailed.setLastname(client.getLastname());
-        detailed.setPassport(client.getPassport());
-        return detailed;
     }
 
 }
