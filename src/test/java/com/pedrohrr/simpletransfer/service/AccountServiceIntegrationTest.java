@@ -1,19 +1,13 @@
 package com.pedrohrr.simpletransfer.service;
 
 import com.blade.ioc.annotation.Inject;
-import com.blade.test.BladeApplication;
-import com.blade.test.BladeTestRunner;
-import com.pedrohrr.simpletransfer.TestApplication;
+import com.pedrohrr.simpletransfer.AbstractIntegrationTest;
 import com.pedrohrr.simpletransfer.enumeration.AccountStatus;
 import com.pedrohrr.simpletransfer.exception.*;
 import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.model.Client;
-import io.github.biezhi.anima.Anima;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import java.math.BigDecimal;
@@ -21,10 +15,8 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@RunWith(BladeTestRunner.class)
-@BladeApplication(TestApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AccountServiceIntegrationTest {
+public class AccountServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Inject
     private AccountService service;

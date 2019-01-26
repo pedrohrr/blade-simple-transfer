@@ -1,26 +1,21 @@
 package com.pedrohrr.simpletransfer.service;
 
 import com.blade.ioc.annotation.Inject;
-import com.blade.test.BladeApplication;
-import com.blade.test.BladeTestRunner;
-import com.pedrohrr.simpletransfer.TestApplication;
+import com.pedrohrr.simpletransfer.AbstractIntegrationTest;
 import com.pedrohrr.simpletransfer.exception.DuplicateException;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Client;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(BladeTestRunner.class)
-@BladeApplication(TestApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ClientServiceIntegrationTest {
+public class ClientServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Inject
     private ClientService service;
@@ -30,13 +25,13 @@ public class ClientServiceIntegrationTest {
         final Client cliente = new Client();
         cliente.setFirstname("First");
         cliente.setLastname("Last");
-        cliente.setPassport("AAA567");
+        cliente.setPassport("CCC123");
         long c1 = service.create(cliente);
 
         final Client cliente2 = new Client();
         cliente2.setFirstname("First");
         cliente2.setLastname("Last");
-        cliente2.setPassport("AAA568");
+        cliente2.setPassport("CCC345");
         long c2 = service.create(cliente2);
 
         final Client c = new Client();
@@ -47,12 +42,12 @@ public class ClientServiceIntegrationTest {
 
         List<Client> clients = service.findByName("First");
         assertEquals(1, clients.size());
-        assertEquals("AAA567", clients.get(0).getPassport());
+        assertEquals("CCC123", clients.get(0).getPassport());
 
         Client client = service.findById(c2);
         assertEquals("John", client.getFirstname());
         assertEquals("Doe", client.getLastname());
-        assertEquals("AAA568", client.getPassport());
+        assertEquals("CCC345", client.getPassport());
 
         service.delete(c1);
     }
@@ -62,7 +57,13 @@ public class ClientServiceIntegrationTest {
         final Client c = new Client();
         c.setFirstname("Duplicate");
         c.setLastname("Last");
-        c.setPassport("AAA568");
+        c.setPassport("AAA345");
+        service.create(c);
+
+        final Client c2 = new Client();
+        c2.setFirstname("Duplicate");
+        c2.setLastname("Last");
+        c2.setPassport("AAA345");
         service.create(c);
     }
 

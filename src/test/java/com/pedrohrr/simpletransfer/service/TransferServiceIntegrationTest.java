@@ -1,10 +1,7 @@
 package com.pedrohrr.simpletransfer.service;
 
 import com.blade.ioc.annotation.Inject;
-import com.blade.test.BladeApplication;
-import com.blade.test.BladeTestRunner;
-import com.pedrohrr.simpletransfer.TestApplication;
-import com.pedrohrr.simpletransfer.enumeration.AccountStatus;
+import com.pedrohrr.simpletransfer.AbstractIntegrationTest;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Account;
@@ -12,7 +9,6 @@ import com.pedrohrr.simpletransfer.model.Client;
 import com.pedrohrr.simpletransfer.model.Transfer;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import java.math.BigDecimal;
@@ -20,10 +16,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(BladeTestRunner.class)
-@BladeApplication(TestApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TransferServiceIntegrationTest {
+public class TransferServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Inject
     private TransferService service;
