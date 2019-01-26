@@ -4,6 +4,7 @@ import com.pedrohrr.simpletransfer.data.Validator;
 import com.pedrohrr.simpletransfer.data.transfer.TransferCreate;
 import com.pedrohrr.simpletransfer.data.transfer.TransferDetailed;
 import com.pedrohrr.simpletransfer.data.transfer.TransferMinimal;
+import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Transfer;
 import com.pedrohrr.simpletransfer.populator.TransferPopulator;
@@ -72,11 +73,19 @@ public class TransferFacadeTest {
         TransferCreate tc = mock(TransferCreate.class);
         when(service.create(t)).thenReturn(1l);
         doNothing().when(validator).validate(tc);
+        when(populator.fromCreate(tc)).thenReturn(t);
+        assertEquals(1l, facade.create(tc).longValue());
         verify(validator, times(1)).validate(tc);
     }
 
     @Test
-    public void process() {
+    public void process() throws SimpleTransferException {
+        Transfer t = mock(Transfer.class);
+        when(service.findByStatus(TransferStatus.POSTED)).thenReturn(Arrays.asList(t));
+        doNothing().when(service).update(t);
+        verify(service, times(1)).update(t);
+        verifyNoMoreInteractions(service);
+        facade.process();
     }
 
 }
