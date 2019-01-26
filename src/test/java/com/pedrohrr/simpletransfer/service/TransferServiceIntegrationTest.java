@@ -2,6 +2,7 @@ package com.pedrohrr.simpletransfer.service;
 
 import com.blade.ioc.annotation.Inject;
 import com.pedrohrr.simpletransfer.AbstractIntegrationTest;
+import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Account;
@@ -64,19 +65,19 @@ public class TransferServiceIntegrationTest extends AbstractIntegrationTest {
         transfer1.setAmount(BigDecimal.TEN);
         transfer1.setReceiver(a2);
         transfer1.setSender(a1);
-        long t1 = service.create(transfer1);
+        service.create(transfer1);
 
         final Transfer transfer2 = new Transfer();
         transfer2.setAmount(BigDecimal.TEN);
         transfer2.setReceiver(a3);
         transfer2.setSender(a2);
-        long t2 = service.create(transfer2);
+        service.create(transfer2);
 
         final Transfer transfer3 = new Transfer();
         transfer3.setAmount(BigDecimal.TEN);
         transfer3.setReceiver(a3);
         transfer3.setSender(a1);
-        long t3 = service.create(transfer3);
+        service.create(transfer3);
 
         List<Transfer> toA3 = service.findByReceiverId(a3);
         assertEquals(2, toA3.size());
@@ -89,6 +90,9 @@ public class TransferServiceIntegrationTest extends AbstractIntegrationTest {
 
         List<Transfer> fromC1 = service.findBySenderClientId(c1);
         assertEquals(3, fromC1.size());
+
+        List<Transfer> byStatus = service.findByStatus(TransferStatus.POSTED);
+        assertEquals(3, byStatus.size());
 
     }
 

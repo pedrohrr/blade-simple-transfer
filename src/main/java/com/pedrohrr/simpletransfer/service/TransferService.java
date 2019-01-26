@@ -1,6 +1,7 @@
 package com.pedrohrr.simpletransfer.service;
 
 import com.blade.ioc.annotation.Bean;
+import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
 import com.pedrohrr.simpletransfer.model.Transfer;
 
@@ -26,6 +27,10 @@ public class TransferService extends AbstractService<Transfer> {
 
     public List<Transfer> findByReceiverClientId(final Long id) throws NotFoundException {
         return bySQL(RECEIVER_CLIENT_QUERY, id);
+    }
+
+    public List<Transfer> findByStatus(final TransferStatus status) throws NotFoundException {
+        return find(t -> t.getStatus().equals(status));
     }
 
     @Override
