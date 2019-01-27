@@ -33,12 +33,6 @@ public class ClientController {
         return RestResponse.ok();
     }
 
-    @DeleteRoute("/:clientId")
-    public RestResponse deleteClient(@PathParam final Long clientId) throws SimpleTransferException {
-        clientFacade.delete(clientId);
-        return RestResponse.ok();
-    }
-
     @GetRoute("/:clientId")
     public RestResponse getById(@PathParam Long clientId) throws SimpleTransferException {
         return RestResponse.ok(clientFacade.findById(clientId));

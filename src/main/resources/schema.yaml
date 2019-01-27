@@ -115,25 +115,6 @@ paths:
             $ref: "#/definitions/RestResponse"
         404:
           description: "Client not found"
-    delete:
-      tags:
-      - "client"
-      summary: "Deletes a client"
-      operationId: "deleteClient"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "clientId"
-        in: "path"
-        description: "ID of client to be deleted"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "Client deleted"
-        404:
-          description: "Client not found"
     
   /account:
     post:
