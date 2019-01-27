@@ -1,5 +1,7 @@
 # blade-simple-transfer
 
+[![Build Status](https://travis-ci.com/pedrohrr/blade-simple-transfer.svg?branch=master)](https://travis-ci.com/pedrohrr/blade-simple-transfer)
+
 REST api builded upon [Blade|https://github.com/lets-blade/blade] which simulates transfers between accounts from the same Bank with different currencies.
 
 ## Libraries | API
