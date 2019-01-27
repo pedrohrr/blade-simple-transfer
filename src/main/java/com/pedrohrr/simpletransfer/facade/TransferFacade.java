@@ -20,7 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @Bean
@@ -30,8 +32,8 @@ public class TransferFacade {
     private static final String NO_TRANSFERS_FOUND = "No transfers found";
     private static final String TRANSFER = "Transfer";
     private static final String NO_POSTED_TRANSFERS_FOUND = "No Posted transfers found for processing";
-    public static final String UNABLE_TO_PROCESS_TRANSFER = "Unable to process Transfer";
-    public static final String UNABLE_TO_UPDATE_TRANSFER = "Unable to update transfer";
+    private static final String UNABLE_TO_PROCESS_TRANSFER = "Unable to process Transfer";
+    private static final String UNABLE_TO_UPDATE_TRANSFER = "Unable to update transfer";
 
     @Inject
     private TransferService service;
@@ -62,8 +64,8 @@ public class TransferFacade {
         return transfers;
     }
 
-    public List<TransferMinimal> findByClientId(final Long id) throws SimpleTransferException {
-        final List<TransferMinimal> transfers = new ArrayList<>();
+    public Set<TransferMinimal> findByClientId(final Long id) throws SimpleTransferException {
+        final Set<TransferMinimal> transfers = new HashSet<>();
 
         for (final Transfer t : getByClient(id)) {
             transfers.add(populator.toMinimal(t));

@@ -1,7 +1,9 @@
 package com.pedrohrr.simpletransfer.predicate;
 
+import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
 import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.model.Client;
+import com.pedrohrr.simpletransfer.model.Transfer;
 
 import java.util.function.Predicate;
 
@@ -24,6 +26,18 @@ public final class ModelPredicate {
 
     public static Predicate<Account> getClientPredicate(Long id) {
         return a -> a.getClient().equals(id);
+    }
+
+    public static Predicate<Transfer> getSenderIdPredicate(Long id) {
+        return a -> a.getSender().equals(id);
+    }
+
+    public static Predicate<Transfer> getReceiverIdPredicate(Long id) {
+        return a -> a.getReceiver().equals(id);
+    }
+
+    public static Predicate<Transfer> getStatusPredicate(TransferStatus status) {
+        return t -> t.getStatus().equals(status);
     }
 
 }

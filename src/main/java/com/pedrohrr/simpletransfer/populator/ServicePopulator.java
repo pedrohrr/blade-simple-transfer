@@ -1,5 +1,6 @@
 package com.pedrohrr.simpletransfer.populator;
 
+import com.blade.ioc.annotation.Bean;
 import com.blade.ioc.annotation.Inject;
 import com.pedrohrr.simpletransfer.data.account.AccountMinimal;
 import com.pedrohrr.simpletransfer.data.client.ClientMinimal;
@@ -9,19 +10,20 @@ import com.pedrohrr.simpletransfer.model.Client;
 import com.pedrohrr.simpletransfer.service.AccountService;
 import com.pedrohrr.simpletransfer.service.ClientService;
 
+@Bean
 public class ServicePopulator {
 
     @Inject
-    AccountService accountService;
+    private AccountService accountService;
 
     @Inject
-    ClientService clientService;
+    private ClientService clientService;
 
     @Inject
-    AccountPopulator accountPopulator;
+    private AccountPopulator accountPopulator;
 
     @Inject
-    ClientPopulator clientPopulator;
+    private ClientPopulator clientPopulator;
 
 
     ClientMinimal getClientMinimal(final Long id) throws SimpleTransferException {

@@ -7,18 +7,20 @@ import com.pedrohrr.simpletransfer.model.Transfer;
 
 import java.util.List;
 
+import static com.pedrohrr.simpletransfer.predicate.ModelPredicate.*;
+
 @Bean
 public class TransferService extends AbstractService<Transfer> {
 
     private static final String SENDER_CLIENT_QUERY = "select t.id from transfers t join accounts a on t.sender = a.id where a.client = ?";
-    private static final String RECEIVER_CLIENT_QUERY = "select t.id from transfers t join accounts a on t.receiver = a.id where a.client = ?";
+    private static final String RECEIVER_CLIENT_QUERY = "select t.id from transfers t join accounts a on t.receiver = a.id where a.client = ? and t.status = ?";
 
     public List<Transfer> findBySenderId(final Long id) throws NotFoundException {
-        return find(a -> a.getSender().equals(id));
+        return find(getSenderIdPredicate(id));
     }
 
     public List<Transfer> findByReceiverId(final Long id) throws NotFoundException {
-        return find(a -> a.getReceiver().equals(id));
+        return find(getReceiverIdPredicate(id));
     }
 
     public List<Transfer> findBySenderClientId(final Long id) throws NotFoundException {
@@ -26,11 +28,11 @@ public class TransferService extends AbstractService<Transfer> {
     }
 
     public List<Transfer> findByReceiverClientId(final Long id) throws NotFoundException {
-        return bySQL(RECEIVER_CLIENT_QUERY, id);
+        return bySQL(RECEIVER_CLIENT_QUERY, id, TransferStatus.COMPLETED);
     }
 
     public List<Transfer> findByStatus(final TransferStatus status) throws NotFoundException {
-        return find(t -> t.getStatus().equals(status));
+        return find(getStatusPredicate(status));
     }
 
     @Override

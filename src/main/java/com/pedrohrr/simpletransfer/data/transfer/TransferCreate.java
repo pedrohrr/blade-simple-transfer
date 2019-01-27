@@ -19,6 +19,5 @@ public class TransferCreate extends ValidatedData {
     @NotNull
     @Positive
     private Long sender;
-    private String notes;
 
 }
