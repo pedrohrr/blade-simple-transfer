@@ -23,6 +23,7 @@ public class CurrencyService {
     private static final String UNABLE_TO_CONNECT_TO_CURRENCY_API = "Unable to connect to currency api";
     private static final String ACCEPT = "accept";
     private static final String APPLICATION_JSON = "application/json";
+    private static final String CURRENCY_IS_NOT_SUPPORTED = "Currency is not supported";
 
     @Setter
     @Value(name = "currency.validation.api")
@@ -32,9 +33,11 @@ public class CurrencyService {
     @Value(name = "currency.conversion.api")
     private String conversionUrl;
 
-    public boolean validate(final String currency) throws InvalidDataException {
+    public void validate(final String currency) throws InvalidDataException {
         final Response resp = getResponse(String.format(validationUrl, currency));
-        return resp.getError() == null;
+        if (resp.getError() != null) {
+            throw new InvalidDataException(CURRENCY_IS_NOT_SUPPORTED);
+        }
     }
 
     public BigDecimal getConversionRate(final String base, final String comparison) throws InvalidDataException {

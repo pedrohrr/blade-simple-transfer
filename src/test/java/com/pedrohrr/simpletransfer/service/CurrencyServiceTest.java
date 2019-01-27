@@ -21,8 +21,13 @@ public class CurrencyServiceTest {
 
     @Test
     public void validate() throws InvalidDataException {
-        assertTrue(service.validate("USD"));
-        assertTrue(service.validate("EUR"));
+        service.validate("USD");
+        service.validate("EUR");
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void validateInvalidDataException() throws InvalidDataException {
+        service.validate("XAD");
     }
 
     @Test
