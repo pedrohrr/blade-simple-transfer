@@ -9,32 +9,44 @@ import com.pedrohrr.simpletransfer.data.transfer.TransferMinimal;
 import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
 import com.pedrohrr.simpletransfer.exception.NotFoundException;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
+import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.model.Transfer;
 import com.pedrohrr.simpletransfer.populator.TransferPopulator;
+import com.pedrohrr.simpletransfer.service.AccountService;
+import com.pedrohrr.simpletransfer.service.CurrencyService;
 import com.pedrohrr.simpletransfer.service.TransferService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.github.biezhi.anima.Anima;
+import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Bean
+@Slf4j
 public class TransferFacade {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TransferFacade.class);
 
     private static final String NO_TRANSFERS_FOUND = "No transfers found";
     private static final String TRANSFER = "Transfer";
     private static final String NO_POSTED_TRANSFERS_FOUND = "No Posted transfers found for processing";
+    public static final String UNABLE_TO_PROCESS_TRANSFER = "Unable to process Transfer";
+    public static final String UNABLE_TO_UPDATE_TRANSFER = "Unable to update transfer";
 
     @Inject
     private TransferService service;
+
+    @Inject
+    private AccountService accountService;
 
     @Inject
     private TransferPopulator populator;
 
     @Inject
     private Validator validator;
+
+    @Inject
+    private CurrencyService currencyService;
 
     public TransferDetailed findById(final Long id) throws SimpleTransferException {
         return populator.toDetailed(service.findById(id));
@@ -65,13 +77,43 @@ public class TransferFacade {
         return service.create(populator.fromCreate(transfer));
     }
 
-    public void process() {
+    public void process() throws SimpleTransferException {
         try {
             final List<Transfer> postedTransfers = service.findByStatus(TransferStatus.POSTED);
-
+            postedTransfers.forEach(this::processTransfer);
         } catch (NotFoundException e) {
-            LOG.warn(NO_POSTED_TRANSFERS_FOUND, e);
+            log.warn(NO_POSTED_TRANSFERS_FOUND, e);
         }
+    }
+
+    private void processTransfer(final Transfer t) {
+        Anima.atomic(() -> {
+            try {
+                final Account sender = accountService.findById(t.getSender());
+                final Account receiver = accountService.findById(t.getSender());
+                final BigDecimal rate = currencyService.getConversionRate(sender.getCurrency(), receiver.getCurrency());
+                accountService.adjustBalance(t.getSender(), t.getAmount().negate());
+                accountService.adjustBalance(t.getReceiver(), t.getAmount().multiply(rate));
+                t.setConversion(rate);
+                t.setStatus(TransferStatus.COMPLETED);
+                service.update(t);
+            } catch (SimpleTransferException e) {
+                log.error(UNABLE_TO_PROCESS_TRANSFER, e);
+                throw new RuntimeException(e.getMessage());
+            }
+        }).catchException(handleException(t));
+    }
+
+    private Consumer<Exception> handleException(Transfer t) {
+        return e -> {
+            t.setStatus(TransferStatus.CANCELED);
+            t.setNotes(e.getMessage());
+            try {
+                service.update(t);
+            } catch (NotFoundException e1) {
+                log.error(UNABLE_TO_UPDATE_TRANSFER, e);
+            }
+        };
     }
 
     private List<Transfer> getByAccount(Long id) throws NotFoundException {
@@ -80,13 +122,13 @@ public class TransferFacade {
         try {
             transfers.addAll(service.findByReceiverId(id));
         } catch (NotFoundException e) {
-            LOG.debug(NO_TRANSFERS_FOUND, e);
+            log.debug(NO_TRANSFERS_FOUND, e);
         }
 
         try {
             transfers.addAll(service.findBySenderId(id));
         } catch (NotFoundException e) {
-            LOG.debug(NO_TRANSFERS_FOUND, e);
+            log.debug(NO_TRANSFERS_FOUND, e);
         }
 
         if (transfers.isEmpty()) {
@@ -102,13 +144,13 @@ public class TransferFacade {
         try {
             transfers.addAll(service.findByReceiverClientId(id));
         } catch (NotFoundException e) {
-            LOG.debug(NO_TRANSFERS_FOUND, e);
+            log.debug(NO_TRANSFERS_FOUND, e);
         }
 
         try {
             transfers.addAll(service.findBySenderClientId(id));
         } catch (NotFoundException e) {
-            LOG.debug(NO_TRANSFERS_FOUND, e);
+            log.debug(NO_TRANSFERS_FOUND, e);
         }
 
         if (transfers.isEmpty()) {

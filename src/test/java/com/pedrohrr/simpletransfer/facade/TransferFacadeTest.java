@@ -6,8 +6,11 @@ import com.pedrohrr.simpletransfer.data.transfer.TransferDetailed;
 import com.pedrohrr.simpletransfer.data.transfer.TransferMinimal;
 import com.pedrohrr.simpletransfer.enumeration.TransferStatus;
 import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
+import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.model.Transfer;
 import com.pedrohrr.simpletransfer.populator.TransferPopulator;
+import com.pedrohrr.simpletransfer.service.AccountService;
+import com.pedrohrr.simpletransfer.service.CurrencyService;
 import com.pedrohrr.simpletransfer.service.TransferService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -31,10 +35,16 @@ public class TransferFacadeTest {
     private TransferService service;
 
     @Mock
+    private AccountService accountService;
+
+    @Mock
     private TransferPopulator populator;
 
     @Mock
     private Validator validator;
+
+    @Mock
+    private CurrencyService currencyService;
 
     @Test
     public void findById() throws SimpleTransferException {
@@ -76,16 +86,6 @@ public class TransferFacadeTest {
         when(populator.fromCreate(tc)).thenReturn(t);
         assertEquals(1l, facade.create(tc).longValue());
         verify(validator, times(1)).validate(tc);
-    }
-
-    @Test
-    public void process() throws SimpleTransferException {
-        Transfer t = mock(Transfer.class);
-        when(service.findByStatus(TransferStatus.POSTED)).thenReturn(Arrays.asList(t));
-        doNothing().when(service).update(t);
-        verify(service, times(1)).update(t);
-        verifyNoMoreInteractions(service);
-        facade.process();
     }
 
 }
