@@ -1,4 +1,4 @@
-package com.pedrohrr.simpletransfer;
+package com.pedrohrr.simpletransfer.config;
 
 import com.blade.Blade;
 import com.blade.ioc.annotation.Bean;
