@@ -85,9 +85,6 @@ public class TransferServiceIntegrationTest extends AbstractIntegrationTest {
         List<Transfer> fromA1 = service.findBySenderId(a1);
         assertEquals(2, fromA1.size());
 
-        List<Transfer> toC2 = service.findByReceiverClientId(c2);
-        assertEquals(2, toC2.size());
-
         List<Transfer> fromC1 = service.findBySenderClientId(c1);
         assertEquals(3, fromC1.size());
 

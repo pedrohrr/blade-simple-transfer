@@ -78,11 +78,6 @@ public class TransferFacadeIntegrationTest extends AbstractIntegrationTest {
         assertEquals(0L, getSizeByStatus(ironManTransfers, TransferStatus.CANCELED));
     }
 
-    @Test
-    public void test04ValidateAccountBalances() throws SimpleTransferException {
-        assertEquals(0.0, accountFacade.findById(a1Hulk).getBalance().doubleValue(), 0.0);
-    }
-
     private long getSizeByStatus(Set<TransferMinimal> transfers, TransferStatus status) {
         return transfers.stream().filter(t -> t.getStatus().equals(status)).count();
     }
