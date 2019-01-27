@@ -79,12 +79,12 @@ public class TransferFacade {
         return service.create(populator.fromCreate(transfer));
     }
 
-    public void process() throws SimpleTransferException {
+    public void process() {
         try {
             final List<Transfer> postedTransfers = service.findByStatus(TransferStatus.POSTED);
             postedTransfers.forEach(this::processTransfer);
-        } catch (NotFoundException e) {
-            log.warn(NO_POSTED_TRANSFERS_FOUND, e);
+        } catch (SimpleTransferException e) {
+            log.warn(NO_POSTED_TRANSFERS_FOUND);
         }
     }
 
