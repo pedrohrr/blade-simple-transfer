@@ -15,7 +15,6 @@ public class ExceptionHandler extends DefaultExceptionHandler {
 
     @Override
     public void handleException(Exception e, Request request, Response response) {
-        log.info("Exception handler called");
         if (e instanceof SimpleTransferException) {
             final SimpleTransferException exception = (SimpleTransferException) e;
             response.status(exception.getStatus().code());

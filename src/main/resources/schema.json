@@ -51,12 +51,15 @@
             "description": "Client object to be created",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/RestResponse"
+              "$ref": "#/definitions/ClientCreate"
             }
           }
         ],
         "responses": {
-          "405": {
+          "200": {
+            "description": "Client created"
+          },
+          "400": {
             "description": "Invalid content"
           },
           "409": {
@@ -83,11 +86,14 @@
             "description": "Client object to be updated",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/RestResponse"
+              "$ref": "#/definitions/ClientUpdate"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Client updated"
+          },
           "400": {
             "description": "Invalid content"
           },
@@ -119,7 +125,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Clients found",
             "schema": {
               "type": "array",
               "items": {
@@ -156,7 +162,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Client found",
             "schema": {
               "$ref": "#/definitions/RestResponse"
             }
@@ -171,7 +177,6 @@
           "client"
         ],
         "summary": "Deletes a client",
-        "description": "",
         "operationId": "deleteClient",
         "produces": [
           "application/json"
@@ -187,6 +192,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Client deleted"
+          },
           "404": {
             "description": "Client not found"
           }
@@ -213,11 +221,14 @@
             "description": "Account object to be created",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/RestResponse"
+              "$ref": "#/definitions/AccountCreate"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Account created"
+          },
           "400": {
             "description": "Invalid content"
           },
@@ -233,7 +244,7 @@
         "tags": [
           "account"
         ],
-        "summary": "Create a new account for a given client ID",
+        "summary": "Creates a deposit into the account",
         "operationId": "addBalance",
         "consumes": [
           "application/json"
@@ -248,11 +259,14 @@
             "description": "Account object to be created",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/RestResponse"
+              "$ref": "#/definitions/AccountDeposit"
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Deposit completed"
+          },
           "400": {
             "description": "Invalid content"
           }
@@ -294,32 +308,6 @@
             "description": "Account not found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "account"
-        ],
-        "summary": "Deletes an account",
-        "description": "",
-        "operationId": "deleteAccount",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "description": "ID of account to be deleted",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Account not found"
-          }
-        }
       }
     },
     "/client/{clientId}/account": {
@@ -344,7 +332,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Accounts found",
             "schema": {
               "type": "array",
               "items": {
@@ -383,6 +371,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Transfer created"
+          },
           "400": {
             "description": "Invalid content"
           },
@@ -414,7 +405,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Transer found",
             "schema": {
               "$ref": "#/definitions/RestResponse"
             }
@@ -447,7 +438,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Transfers found",
             "schema": {
               "type": "array",
               "items": {
@@ -483,7 +474,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Transfers found",
             "schema": {
               "type": "array",
               "items": {

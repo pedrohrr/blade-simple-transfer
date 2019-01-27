@@ -10,54 +10,58 @@ info:
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 basePath: "/"
 tags:
-  - name: "client"
-    description: "All your client data"
-  - name: "account"
-    description: "Acount management"
-  - name: "transfer"
-    description: "Trasfer operations"
+- name: "client"
+  description: "All your client data"
+- name: "account"
+  description: "Acount management"
+- name: "transfer"
+  description: "Trasfer operations"
 schemes:
-  - "http"
+- "http"
 paths:
   /client:
     post:
       tags:
-        - "client"
+      - "client"
       summary: "Create a new client"
       operationId: "addClient"
       consumes:
-        - "application/json"
+      - "application/json"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Client object to be created"
-          required: true
-          schema:
-            $ref: "#/definitions/RestResponse"
+      - in: "body"
+        name: "body"
+        description: "Client object to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/ClientCreate"
       responses:
-        405:
+        200:
+          description: "Client created"
+        400:
           description: "Invalid content"
         409:
           description: "Client already exist"
     put:
       tags:
-        - "client"
+      - "client"
       summary: "Updates a client data"
       operationId: "updateClient"
       consumes:
-        - "application/json"
+      - "application/json"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Client object to be updated"
-          required: true
-          schema:
-            $ref: "#/definitions/RestResponse"
+      - in: "body"
+        name: "body"
+        description: "Client object to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/ClientUpdate"
       responses:
+        200:
+          description: "Client updated"
         400:
           description: "Invalid content"
         404:
@@ -66,21 +70,21 @@ paths:
   /client/findByName:
     get:
       tags:
-        - "client"
+      - "client"
       summary: "Finds Clients by name"
       description: "Both firstname and lastname will be considered in the query"
       operationId: "findClientsByName"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "name"
-          in: "query"
-          description: "Name to look for client"
-          required: true
-          type: "string"
+      - name: "name"
+        in: "query"
+        description: "Name to look for client"
+        required: true
+        type: "string"
       responses:
         200:
-          description: "successful operation"
+          description: "Clients found"
           schema:
             type: "array"
             items:
@@ -91,63 +95,66 @@ paths:
   /client/{clientId}:
     get:
       tags:
-        - "client"
+      - "client"
       summary: "Find client by ID"
       description: "Returns a single client"
       operationId: "getClientById"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "clientId"
-          in: "path"
-          description: "ID of client to return"
-          required: true
-          type: "integer"
-          format: "int64"
+      - name: "clientId"
+        in: "path"
+        description: "ID of client to return"
+        required: true
+        type: "integer"
+        format: "int64"
       responses:
         200:
-          description: "successful operation"
+          description: "Client found"
           schema:
             $ref: "#/definitions/RestResponse"
         404:
           description: "Client not found"
     delete:
       tags:
-        - "client"
+      - "client"
       summary: "Deletes a client"
-      description: ""
       operationId: "deleteClient"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "clientId"
-          in: "path"
-          description: "ID of client to be deleted"
-          required: true
-          type: "integer"
-          format: "int64"
+      - name: "clientId"
+        in: "path"
+        description: "ID of client to be deleted"
+        required: true
+        type: "integer"
+        format: "int64"
       responses:
+        200:
+          description: "Client deleted"
         404:
           description: "Client not found"
-
+    
   /account:
     post:
       tags:
-        - "account"
+      - "account"
       summary: "Create a new account for a given client ID"
       operationId: "addAccount"
       consumes:
-        - "application/json"
+      - "application/json"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Account object to be created"
-          required: true
-          schema:
-            $ref: "#/definitions/RestResponse"
+      - in: "body"
+        name: "body"
+        description: "Account object to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/AccountCreate"
       responses:
+        200:
+          description: "Account created"
         400:
           description: "Invalid content"
         409:
@@ -156,40 +163,42 @@ paths:
           description: "Client not found"
     put:
       tags:
-        - "account"
-      summary: "Create a new account for a given client ID"
+      - "account"
+      summary: "Creates a deposit into the account"
       operationId: "addBalance"
       consumes:
-        - "application/json"
+      - "application/json"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Account object to be created"
-          required: true
-          schema:
-            $ref: "#/definitions/RestResponse"
+      - in: "body"
+        name: "body"
+        description: "Account object to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/AccountDeposit"
       responses:
+        200:
+          description: "Deposit completed"
         400:
           description: "Invalid content"
-
+  
   /account/{accountId}:
     get:
       tags:
-        - "account"
+      - "account"
       summary: "Find an account by ID"
       description: "Returns a single account"
       operationId: "getAccountById"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "accountId"
-          in: "path"
-          description: "ID of account to return"
-          required: true
-          type: "integer"
-          format: "int64"
+      - name: "accountId"
+        in: "path"
+        description: "ID of account to return"
+        required: true
+        type: "integer"
+        format: "int64"
       responses:
         200:
           description: "successful operation"
@@ -199,68 +208,52 @@ paths:
           description: "Invalid ID"
         404:
           description: "Account not found"
-    delete:
-      tags:
-        - "account"
-      summary: "Deletes an account"
-      description: ""
-      operationId: "deleteAccount"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "accountId"
-          in: "path"
-          description: "ID of account to be deleted"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        404:
-          description: "Account not found"
-
+          
   /client/{clientId}/account:
     get:
       tags:
-        - "client"
-        - "account"
+      - "client"
+      - "account"
       summary: "List all accounts from a given client"
       operationId: "getAccountsByClientId"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "clientId"
-          in: "path"
-          description: "ID of client to look for accounts"
-          required: true
-          type: "string"
+      - name: "clientId"
+        in: "path"
+        description: "ID of client to look for accounts"
+        required: true
+        type: "string"
       responses:
         200:
-          description: "successful operation"
+          description: "Accounts found"
           schema:
             type: "array"
             items:
               $ref: "#/definitions/RestResponse"
         404:
           description: "No account found"
-
+          
   /transfer:
     post:
       tags:
-        - "transfer"
+      - "transfer"
       summary: "Creates a new transfer"
       operationId: "addTransfer"
       consumes:
-        - "application/json"
+      - "application/json"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Transfer object to be created"
-          required: true
-          schema:
-            $ref: "#/definitions/RestResponse"
+      - in: "body"
+        name: "body"
+        description: "Transfer object to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/RestResponse"
       responses:
+        200:
+          description: "Transfer created"
         400:
           description: "Invalid content"
         404:
@@ -268,76 +261,76 @@ paths:
   /transfer/{transferId}:
     get:
       tags:
-        - "transfer"
+      - "transfer"
       summary: "Find a Transfer by the given ID"
       operationId: "getTransferById"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "transferId"
-          in: "path"
-          description: "ID of transfer to return"
-          required: true
-          type: "integer"
-          format: "int64"
+      - name: "transferId"
+        in: "path"
+        description: "ID of transfer to return"
+        required: true
+        type: "integer"
+        format: "int64"
       responses:
         200:
-          description: "successful operation"
+          description: "Transer found"
           schema:
             $ref: "#/definitions/RestResponse"
         404:
           description: "Transfer not found"
-
+          
   /client/{clientId}/transfer:
     get:
       tags:
-        - "client"
-        - "transfer"
+      - "client"
+      - "transfer"
       summary: "List all transfers from a given client"
       operationId: "getTransfersByClientId"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "clientId"
-          in: "path"
-          description: "ID of client to look for transfers"
-          required: true
-          type: "string"
+      - name: "clientId"
+        in: "path"
+        description: "ID of client to look for transfers"
+        required: true
+        type: "string"
       responses:
         200:
-          description: "successful operation"
+          description: "Transfers found"
           schema:
             type: "array"
             items:
               $ref: "#/definitions/RestResponse"
         404:
           description: "No transfer found"
-
+          
   /account/{accountId}/transfer:
     get:
       tags:
-        - "account"
-        - "transfer"
+      - "account"
+      - "transfer"
       summary: "List all transfers from a given account"
       operationId: "getTransfersByAccountId"
       produces:
-        - "application/json"
+      - "application/json"
       parameters:
-        - name: "accountId"
-          in: "path"
-          description: "ID of account to look for transfers"
-          required: true
-          type: "string"
+      - name: "accountId"
+        in: "path"
+        description: "ID of account to look for transfers"
+        required: true
+        type: "string"
       responses:
         200:
-          description: "successful operation"
+          description: "Transfers found"
           schema:
             type: "array"
             items:
               $ref: "#/definitions/RestResponse"
         404:
           description: "No transfer found"
-
+          
 definitions:
   AccountCreate:
     type: "object"
@@ -387,9 +380,9 @@ definitions:
       status:
         type: "string"
         enum:
-          - "ACTIVE"
-          - "BLOCKED"
-          - "DEACTIVATED"
+        - "ACTIVE"
+        - "BLOCKED"
+        - "DEACTIVATED"
   ClientCreate:
     type: "object"
     properties:
@@ -475,9 +468,9 @@ definitions:
       status:
         type: "string"
         enum:
-          - "POSTED"
-          - "CANCELED"
-          - "COMPLETED"
+        - "POSTED"
+        - "CANCELED"
+        - "COMPLETED"
       createdAt:
         type: "string"
         format: "date-time"
@@ -502,3 +495,4 @@ definitions:
       timestamp:
         type: "string"
         format: "date-time"
+  
