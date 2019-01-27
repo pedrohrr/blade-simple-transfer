@@ -9,6 +9,7 @@ import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.populator.AccountPopulator;
 import com.pedrohrr.simpletransfer.service.AccountService;
+import com.pedrohrr.simpletransfer.service.CurrencyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,6 +36,9 @@ public class AccountFacadeTest {
 
     @Mock
     private Validator validator;
+
+    @Mock
+    private CurrencyService currencyService;
 
     @Test
     public void findById() throws SimpleTransferException {
@@ -63,9 +67,12 @@ public class AccountFacadeTest {
         when(service.create(a1)).thenReturn(1l);
         AccountCreate ac1 = mock(AccountCreate.class);
         doNothing().when(validator).validate(ac1);
+        when(ac1.getCurrency()).thenReturn("USD");
+        doNothing().when(currencyService).validate("USD");
         when(populator.fromCreate(ac1)).thenReturn(a1);
         assertEquals(1l, facade.create(ac1).longValue());
         verify(validator, times(1)).validate(ac1);
+        verify(currencyService, times(1)).validate("USD");
     }
 
     @Test

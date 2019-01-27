@@ -11,6 +11,7 @@ import com.pedrohrr.simpletransfer.exception.SimpleTransferException;
 import com.pedrohrr.simpletransfer.model.Account;
 import com.pedrohrr.simpletransfer.populator.AccountPopulator;
 import com.pedrohrr.simpletransfer.service.AccountService;
+import com.pedrohrr.simpletransfer.service.CurrencyService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class AccountFacade {
     @Inject
     private Validator validator;
 
+    @Inject
+    private CurrencyService currencyService;
+
     public AccountDetailed findById(final Long id) throws SimpleTransferException {
         return populator.toDetailed(service.findById(id));
     }
@@ -41,6 +45,7 @@ public class AccountFacade {
 
     public Long create(final AccountCreate account) throws SimpleTransferException {
         validator.validate(account);
+        currencyService.validate(account.getCurrency());
         return service.create(populator.fromCreate(account));
     }
 
