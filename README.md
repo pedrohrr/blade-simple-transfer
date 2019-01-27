@@ -9,15 +9,15 @@ REST api builded upon [Blade|https://github.com/lets-blade/blade] which simulate
 
 ## Give it a try
 
-### Execute with
-```bash
-mvn clean package -DskipTests
-java -jar simple-transfer.jar --server.port=9000
-```
-
 ### API Schema
 ```
 http://localhost:9000/
 ```
 The schema can be loaded using [Swagger Editor](https://swagger.io/tools/swagger-editor/).
 Both [json](https://github.com/pedrohrr/blade-simple-transfer/tree/master/src/main/resources/templates/schema.json) and [yaml](https://github.com/pedrohrr/blade-simple-transfer/tree/master/src/main/resources/templates/schema.yaml) schemas can be found in 'resources/templates'.
+
+### Execute with
+```bash
+mvn clean package -DskipTests
+java -jar simple-transfer.jar --server.port=9000
+```
